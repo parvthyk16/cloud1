@@ -94,8 +94,8 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
                  out.println("</tr>");
            }
                
-             out.println("</table>");
-        
+            out.println("</table>");
+            out.println("<div style='margin-left:160px'><a href='cloudass1.jsp'>Back</a></div>");
             out.println("</body>");
             out.println("</html>");   
  
