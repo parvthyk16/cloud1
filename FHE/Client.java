@@ -5,98 +5,107 @@ import java.util.*;
 public class Client {
 
    
-
+    //String msg;
     public static void main(String args[])throws IOException
     {   
         try
         {
-            String host = "localhost";
-            int port = 5001;
+            
       
-            Socket mysoc = new Socket(host,port);
-	    int index = 0;
-            int bin1[] = new int[25];
-	    int bin2[] = new int[25];	
-	    int cipher[] = new int[25];
-	    int p = 101;
-	    int i;
+            Socket s = new Socket("localhost",4000);
+	    //String msg;
+            int m1,m2,m3,m4,m5,m6,m7;
+//            Socket s;
+            BufferedReader b,br1,b1,b2,b3,b4,b5,b6,b7;
+            PrintWriter pw=new PrintWriter(s.getOutputStream(),true);;
 
-	            //while(true){
-                //Send the message to the server
-              
-               // OutputStreamWriter osw = new OutputStreamWriter(os);
-              //  BufferedWriter bw = new BufferedWriter(osw);
-		OutputStream outToServer = mysoc.getOutputStream();
- 		DataOutputStream out = new DataOutputStream(outToServer);
+	            
+	    OutputStream o=s.getOutputStream();
+ 	    DataOutputStream out=new DataOutputStream(o);
 
-		InputStream ser = mysoc.getInputStream();
-                DataInputStream in =new DataInputStream(ser);
+	    InputStream i=s.getInputStream();
+            DataInputStream in=new DataInputStream(i);
 
-                BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("enter the value for q1 and q2!!");
-              	int q1 = Integer.parseInt(bufferRead.readLine());
-	 	int q2 = Integer.parseInt(bufferRead.readLine());
-		System.out.println("enter the random values for r"); 
- 		int r1 = Integer.parseInt(bufferRead.readLine());
-                int r2 = Integer.parseInt(bufferRead.readLine());
-		System.out.println("enter the random values for b");
-      		int n1 = Integer.parseInt(bufferRead.readLine());
-		int n2 = Integer.parseInt(bufferRead.readLine());
-		
-	      while(n1 > 0){
-              bin1[index++] = n1%2;
-              n1 = n1/2;
-              }
- 	      while(n2 > 0){
-              bin2[index++] = n2%2;
-              n2 = n2/2;
-              }
-              for(i = index-1;i >= 0;i--){
-              System.out.print(bin1[i]);
-              }
- 	      System.out.println("\n");
-	      for(i = index-1;i >= 0;i--){
-              System.out.print(bin2[i]);
-              }
-	      System.out.println("\n");
+          //BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));   
+          
+            System.out.println("Client Started!!!");
+            b=new BufferedReader(new InputStreamReader(System.in));
+            b1=new BufferedReader(new InputStreamReader(System.in));
+            b2=new BufferedReader(new InputStreamReader(System.in));
+            b3=new BufferedReader(new InputStreamReader(System.in));
+            b4=new BufferedReader(new InputStreamReader(System.in));
+            b5=new BufferedReader(new InputStreamReader(System.in));
+            b6=new BufferedReader(new InputStreamReader(System.in));
+            b7=new BufferedReader(new InputStreamReader(System.in));
+            
+             //msg=b.readLine();
+             //pw.println(msg);
+             System.out.print("p:");
+             m1=Integer.parseInt(b1.readLine());
+             System.out.println();                
+             System.out.print("q1:");
+             m2=Integer.parseInt(b2.readLine());
 
-        
-		
+             System.out.print("r1:");
+             m5=Integer.parseInt(b5.readLine());
 
-        for(i=0;i<10;i=i+2){
-	cipher[i]=(p*q1)+(2*r1)+(bin1[i]);
-        cipher[i+1]=(p*q2)+(2*r2)+(bin2[i]);
+             System.out.print("b1:");
+             m6=Integer.parseInt(b6.readLine());
+             
+             System.out.println();
+             System.out.print("q2:");
+             m3=Integer.parseInt(b3.readLine());
 
-        }
+             System.out.print("r2:");
+             m7=Integer.parseInt(b7.readLine());
+
+             System.out.print("b2:");
+             m4=Integer.parseInt(b4.readLine());
+ 
+             int xor,and,c1,c2;
+             xor=m6 ^ m4;
+
+             System.out.println();
+             System.out.println("b1 XOR b2="+xor); 
+             and=m6 & m4;
+             System.out.println("b1 AND b2="+and);
+	     System.out.println();
+             c1=(m1*m2)+(2*m5)+m6;
+             System.out.println("c1="+c1);
+             out.writeInt(c1);
+	     c2=(m1*m3)+(2*m7)+m4;
+             System.out.println("c2="+c2);
+             out.writeInt(c2);
+
+             int ma=in.readInt();
+	     int mm=in.readInt();
+	     System.out.println("The result of c1+c2: "+ma);
+	     System.out.println("The result of c1*c2: "+mm);
+
+	     int ans1=ma%m1;
+             System.out.println();
+             System.out.println("Decrypt : c1%p\n");
+	     if (ans1%2==0)
+	        System.out.println("Decrypted value is even and the bit value is zero\n");
+	     else
+	        System.out.println("Decrypted value is odd and the bit value is one\n");
+	     int ans2=mm%m1;
+             System.out.println("Decrypt : c2%p\n");
 	
-	for(i=0;i<10;i=i+1){
-	out.writeInt(cipher[i]);
-	System.out.println(cipher[i]+"\n");}
+             if (ans2%2==0)                    
+                 System.out.println("Decrypted value is even and the bit value is zero\n");
+	     else
+	        System.out.println("Decrypted value is odd and the bit value is one\n");
+	    
+        }
 
-        int c=in.readInt();
-	int d=in.readInt();
-	System.out.println("The result of c1+c2: "+c+"\n");
-	System.out.println("The result of c1*c2: "+d+"\n");
-
-	int ans1=c%p;
-	if (ans1%2==0)
-	System.out.println("even and the bit value is equal to zero\n");
-	else
-	System.out.println("odd and the bit value is equal to one\n");
-	int ans2=d%p;
-	if (ans2%2==0)
-	System.out.println("even and the bit value is equal to zero\n");
-	else
-	System.out.println("odd and the bit value is equal to one\n");
-}
-
-  catch (Exception exception)
+        catch (Exception exception)
         {
             exception.printStackTrace();
         }
         finally
         {
-            //Closing the socket
+            
             try
             {
                //mysoc.close();
@@ -106,5 +115,5 @@ public class Client {
                 e.printStackTrace();
             }
         }
-    } 
-      }
+  } 
+}
